@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <clipPath id="clip-ICON-BUCKET">
+      <rect width="48" height="48"/>
+    </clipPath>
+  </defs>
+  <g id="ICON-BUCKET" clip-path="url(#clip-ICON-BUCKET)">
+    <g id="Gruppe_24" data-name="Gruppe 24" transform="translate(-953 -586)">
+      <g id="Gruppe_22" data-name="Gruppe 22" transform="translate(960 589)">
+        <path id="Pfad_13" data-name="Pfad 13" d="M531.743,6267c9.4,0,15.016-1.632,16.672-2.769a16.7,16.7,0,0,0-33.393-.135.728.728,0,0,0,0,.1C516.609,6265.328,522.242,6267,531.743,6267Zm0-17.614a14.866,14.866,0,0,1,14.7,12.771c-4.125-1.917-13.365-2-14.689-2s-10.565.083-14.7,1.991A14.862,14.862,0,0,1,531.739,6249.381Z" transform="translate(-515.019 -6247.523)"/>
+        <path id="Pfad_14" data-name="Pfad 14" d="M531.577,6262.645c-4.63,0-12.141-.548-16.215-2.308l4.978,18.694a.943.943,0,0,0,.11.248c.881,1.428,3.741,4.747,11.266,4.747,7.126,0,9.916-2.987,10.945-4.771.043-.071.131-.146.155-.223l5.039-18.724C543.8,6262.09,536.231,6262.645,531.577,6262.645Z" transform="translate(-514.852 -6241.316)"/>
+      </g>
+    </g>
+  </g>
+</svg>

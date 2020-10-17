@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <clipPath id="clip-ICON-EDIT">
+      <rect width="48" height="48"/>
+    </clipPath>
+  </defs>
+  <g id="ICON-EDIT" clip-path="url(#clip-ICON-EDIT)">
+    <g id="Gruppe_25" data-name="Gruppe 25" transform="translate(4.295 4.297)">
+      <path id="Pfad_5" data-name="Pfad 5" d="M868.963,2859.354l2.329-2.326a5.7,5.7,0,0,0,1.746-3.949,3.8,3.8,0,0,0-1.073-2.723l-4.8-4.8c-1.6-1.6-4.721-1.279-6.673.672l-2.327,2.33Z" transform="translate(-834.53 -2844.531)"/>
+      <path id="Pfad_6" data-name="Pfad 6" d="M862.071,2848.379l-18.189,18.191a11.264,11.264,0,0,0,10.8,10.8l18.191-18.191Z" transform="translate(-839.639 -2843.155)"/>
+      <path id="Pfad_7" data-name="Pfad 7" d="M843.578,2863.029l-2.8,12.306a.848.848,0,0,0,.828,1.037.813.813,0,0,0,.189-.021l12.311-2.8A14.921,14.921,0,0,1,843.578,2863.029Z" transform="translate(-840.757 -2837.915)"/>
+    </g>
+  </g>
+</svg>

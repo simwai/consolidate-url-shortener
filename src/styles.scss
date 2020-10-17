@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+.container-fluid {
+    background-color: #DADFE1;
+    height: 100vh;
+}
+
+h1 {
+    font-family: "Trebuchet MS", sans-serif;
+}
+
