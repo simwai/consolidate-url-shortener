@@ -1,0 +1,7 @@
+SELECT   `alias`.`id`,
+         `alias`.`alias`,
+         `alias`.`url_id`,
+         `url`.`id`,
+         `url`.`url`
+FROM     `alias` 
+INNER JOIN `url`  ON `alias`.`url_id` = `url`.`id`

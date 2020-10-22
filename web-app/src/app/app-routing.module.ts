@@ -1,7 +1,7 @@
-import { UrlAliasInputComponent } from './url-alias-input/url-alias-input.component';
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+import { UrlAliasInputComponent } from './url-alias-input/url-alias-input.component'
+import { NgModule } from '@angular/core'
+import { Routes, RouterModule } from '@angular/router'
+import { LoginComponent } from './login/login.component'
 
 const routes: Routes = [
   {
@@ -17,7 +17,7 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

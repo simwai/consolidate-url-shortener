@@ -66,7 +66,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "consolidate-url-shortener:build"
+            "browserTarget": "consolidate-url-shortener:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
