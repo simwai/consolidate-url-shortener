@@ -1,7 +1,9 @@
-import { UrlAliasInputComponent } from './url-alias-input/url-alias-input.component'
+import { UrlAliasInputComponent } from './components/url-alias-input/url-alias-input.component'
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
-import { LoginComponent } from './login/login.component'
+
+import { LoginComponent } from './components/login/login.component'
+import { AuthGuardService } from './services/auth-guard/auth-guard.service'
 
 const routes: Routes = [
   {
@@ -10,7 +12,8 @@ const routes: Routes = [
   },
   {
     path: 'url-alias-input',
-    component: UrlAliasInputComponent
+    component: UrlAliasInputComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: '',

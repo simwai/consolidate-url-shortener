@@ -6,6 +6,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+    "lint-fix": "ng lint --fix",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -21,7 +22,7 @@
     "@angular/router": "~10.1.6",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "bootstrap": "^4.5.0",
-    "rxjs": "~6.6.0",
+    "rxjs": "6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

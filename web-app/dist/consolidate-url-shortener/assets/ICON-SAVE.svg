@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <clipPath id="clip-ICON-SAVE">
+      <rect width="48" height="48"/>
+    </clipPath>
+  </defs>
+  <g id="ICON-SAVE" clip-path="url(#clip-ICON-SAVE)">
+    <g id="Gruppe_15" data-name="Gruppe 15" transform="translate(-600.398 -9236.813)">
+      <rect id="Rechteck_9" data-name="Rechteck 9" width="17" height="9" transform="translate(618.398 9242.813)"/>
+      <rect id="Rechteck_10" data-name="Rechteck 10" width="5" height="5" transform="translate(610.398 9246.813)"/>
+      <path id="Pfad_12" data-name="Pfad 12" d="M641.327,9243.173h-5.154v9.569c0,.406-.327,1.031-.734,1.031H617.777c-.407,0-.444-.625-.444-1.031v-9.569h-9.859a.737.737,0,0,0-.738.738v27.964a.727.727,0,0,0,.181.482l5.152,5.891a.747.747,0,0,0,.557.251h28.7a.734.734,0,0,0,.734-.736v-33.852A.734.734,0,0,0,641.327,9243.173ZM611,9252.594a.736.736,0,0,1-.736-.736v-4.415a.736.736,0,0,1,.736-.738h4.416a.737.737,0,0,1,.736.738v4.415a.737.737,0,0,1-.736.736Z" transform="translate(0 -0.044)"/>
+    </g>
+  </g>
+</svg>

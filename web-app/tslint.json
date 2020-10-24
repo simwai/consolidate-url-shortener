@@ -12,7 +12,8 @@
     },
     "array-type": false,
     "arrow-return-shorthand": true,
-    "curly": true,
+    "object-literal-shorthand": false,
+    "curly": [true, "as-needed"],
     "deprecation": {
       "severity": "warning"
     },
@@ -43,6 +44,7 @@
         ]
       }
     ],
+    "member-access": [true, "no-public"],
     "no-console": [
       true,
       "debug",

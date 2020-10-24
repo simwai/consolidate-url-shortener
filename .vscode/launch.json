@@ -1,19 +1,29 @@
 {
   "version": "0.2.0",
   "configurations": [
+      // run npm script always-debug before
+      // TODO find out how to create a proper prelaunchtask
       {
           "type": "node",
           "request": "attach",
-          "name": "Node: Nodemon",
+          "name": "Nodemon Server",
           "processId": "${command:PickProcess}",
           "restart": true,
           "protocol": "inspector",
       },
       {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Server",
+        "program": "${workspaceFolder}/server/app.js"
+      },
+      {
+        // start npm script ng serve before
+        // TODO find out how to create a proper prelaunchtask
         "name": "ng serve",
         "type": "chrome",
         "request": "launch",
-        "url": "http://localhost:4200/#",
+        "url": "http://localhost:4200",
         "webRoot": "${workspaceFolder}/web-app/",
         "sourceMapPathOverrides": {
           "webpack:/*": "${webRoot}/*",

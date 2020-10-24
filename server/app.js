@@ -1,24 +1,54 @@
 const express = require('express')
 const cors = require('cors')
 const validateUrl = require('url-validator')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
 const { DbService } = require('./db-service')
 const dbService = new DbService()
+
+const middleware = require('./middleware')
 
 const app = express()
 const port = 3000
 
 app.use(cors())
-// app.use(cors({ origin: true }))
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*")
-//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization")
 
-//   next()
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  console.log(user)
+  if(user) done(null, user);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log(id)
+  done(null, id);
+});
+
+// TODO fix logic
+passport.use(new LocalStrategy((username, password, done) => {
+  if (username === 'admin' && password === 'admin') {
+    return done(null, username)
+  } else {
+    return done('Unauthorized access', false)
+  }
+}))
+
+// app.post('/authenticate/user/:user/password/:password', (req, res) => { 
+//   console.log(req)
+//   middleware.auth(passport, req.user, req.password)
+//   // res.status(200).json('Auth worked.')
 // })
 
-app.get('/:shortUrl', async (req, res) => {
+app.post('/authenticate', (req, res) => { 
+  console.log(req)
+  middleware.auth(passport, 'admin', 'admin')
+  // res.status(200).json('Auth worked.')
+})
+
+app.get('/:shortUrl', middleware.isLoggedIn, async (req, res) => {
     const shortUrlCode = req.params.shortUrl
     const [url] = await dbService.findUrlForAlias(shortUrlCode)
 
@@ -26,7 +56,8 @@ app.get('/:shortUrl', async (req, res) => {
         if (url.length !== 0) {
             return res.redirect(url.longUrl)
         } else {
-            return res.status(400).json('The short url doesn\'t exists in our system.')
+            
+          return res.status(400).json('The short url doesn\'t exists in our system.')
         }
     }
     catch (err) {
@@ -35,7 +66,7 @@ app.get('/:shortUrl', async (req, res) => {
     }
 })
 
-app.post(['/url/*/alias/:alias', '/url/*'], async (req, res) => {
+app.post(['/url/*/alias/:alias', '/url/*'], middleware.isLoggedIn, async (req, res) => {
   const url = req.params[0]
   const alias = req.params.alias
   const isUrlValid = validateUrl(url)
@@ -47,7 +78,7 @@ app.post(['/url/*/alias/:alias', '/url/*'], async (req, res) => {
 
   if (isUrlValid) {
     await dbService.createAliasForUrl(url, alias)
-    res.status(400).json('Worked fine.')
+    res.status(200).json('Worked fine.')
   } else {
     res.status(500).json('/url/*/alias/:alias failed.')
   }
@@ -56,40 +87,5 @@ app.post(['/url/*/alias/:alias', '/url/*'], async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
-
-// function parseUrlAlias(url, res, alias = null) {
-//   if (alias !== null && alias.length > 10) {
-//     res.status(400).json('Alias is longer than 10 characters.')
-//     return null
-//   }
-
-//   const urlSplit = url.split('/')
-
-//   if (urlSplit.find(el => el.includes('http'))) {
-//     urlSplit.splice(0, 2)
-
-//     url = ''
- 
-//     let counter = 0
-//     for (const urlPart of urlSplit) {
-//       if (urlPart === 'alias') break
-
-//       if (counter === 0) url = urlPart + '//'
-//       else if (urlPart != '') url +=  urlPart + '/'
-
-//       counter++
-//     }
-
-//     url = url.substring(0, url.length - 1)
-//   }
-
-//   if (validateUrl(url)) {        
-//     res.status(200).json('Worked fine.')
-//     return url
-//   } else {
-//     res.status(400).json('Invalid url')
-//     return null
-//   }
-// }
 
 module.exports = app
