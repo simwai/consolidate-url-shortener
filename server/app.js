@@ -1,72 +1,37 @@
+require('dotenv').config()
+
 const express = require('express')
 const cors = require('cors')
 const validateUrl = require('url-validator')
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
+const jwt = require('jsonwebtoken')
 
 const { DbService } = require('./db-service')
+
 const dbService = new DbService()
-
-const middleware = require('./middleware')
-
 const app = express()
-const port = 3000
+const port = 1000
 
-app.use(cors())
+app.use(cors()).use(express.json())
 
-app.use(passport.initialize());
-app.use(passport.session());
+// TODO find out how to use authenticationToken() here, username and password at setURLAlias() will be necessary
+app.get('/:shortUrl', async (req, res) => {
+    // authenticated user -> console.log(req.user.name)
 
-passport.serializeUser(function(user, done) {
-  console.log(user)
-  if(user) done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  console.log(id)
-  done(null, id);
-});
-
-// TODO fix logic
-passport.use(new LocalStrategy((username, password, done) => {
-  if (username === 'admin' && password === 'admin') {
-    return done(null, username)
-  } else {
-    return done('Unauthorized access', false)
-  }
-}))
-
-// app.post('/authenticate/user/:user/password/:password', (req, res) => { 
-//   console.log(req)
-//   middleware.auth(passport, req.user, req.password)
-//   // res.status(200).json('Auth worked.')
-// })
-
-app.post('/authenticate', (req, res) => { 
-  console.log(req)
-  middleware.auth(passport, 'admin', 'admin')
-  // res.status(200).json('Auth worked.')
-})
-
-app.get('/:shortUrl', middleware.isLoggedIn, async (req, res) => {
     const shortUrlCode = req.params.shortUrl
-    const [url] = await dbService.findUrlForAlias(shortUrlCode)
+
+    let url
 
     try {
-        if (url.length !== 0) {
-            return res.redirect(url.longUrl)
-        } else {
-            
-          return res.status(400).json('The short url doesn\'t exists in our system.')
-        }
+      [url] = await dbService.findUrlForAlias(shortUrlCode)
+    } catch (error) {
+      return sendInternalErrorResponse(res, error)
     }
-    catch (err) {
-        console.error('Error while retrieving long url for shorturlcode ' + shortUrlCode)
-        return res.status(500).json('There is some internal error.')
-    }
+
+    if (url.length !== 0) res.redirect(301, url[0].url)
+    else res.status(400).json('The short url doesn\'t exists in our system.')
 })
 
-app.post(['/url/*/alias/:alias', '/url/*'], middleware.isLoggedIn, async (req, res) => {
+app.post(['/url/*/alias/:alias', '/url/*'], async (req, res) => {
   const url = req.params[0]
   const alias = req.params.alias
   const isUrlValid = validateUrl(url)
@@ -84,8 +49,56 @@ app.post(['/url/*/alias/:alias', '/url/*'], middleware.isLoggedIn, async (req, r
   }
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+app.post('/login', async (req, res) => {
+  // authenticates user
+  const username = { name: req.body.username }
+  const password = req.body.password
+
+  let passwordFromDb
+
+  try {
+    [[passwordFromDb]] = await dbService.findPasswordForUsername(username.name)
+    passwordFromDb = passwordFromDb?.password
+  } catch (error) {
+    return sendInternalErrorResponse(res, error)
+  }
+
+  if (passwordFromDb != null) {
+    if (password === passwordFromDb) {
+        // creates accessToken for each user
+      const accessToken = jwt.sign(username, process.env.ACCESS_TOKEN_SECRET)
+      res.json({ accessToken: accessToken })
+    } else {
+      res.sendStatus(403)
+    } 
+  } else sendInternalErrorResponse(res, 'Wrong password')
 })
 
-module.exports = app
+app.post('/validateToken', authenticateToken, (_req, res) => {
+  res.status(200).json('Access token is correct') 
+})
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization']
+  const token = authHeader?.split(' ')[1]
+
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+    if (error) return res.sendStatus(403)
+    req.user = user
+    next() 
+  })
+}
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`)
+})
+
+function sendInternalErrorResponse(res, error) {
+  // TODO rework error handling, false password is not internal error
+  if (error !== undefined) console.error('Internal error: ' + error)
+  else console.error('Internal error')
+
+  return res.status(500).json('There is some internal error.')
+}

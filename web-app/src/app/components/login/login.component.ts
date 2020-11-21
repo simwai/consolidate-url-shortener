@@ -21,12 +21,14 @@ export class LoginComponent {
     const username: string = this.loginForm.value.username
     const password: string = this.loginForm.value.password
 
+    this.authService.authenticate(username, password).then(result => {
+      if (result) this.router.navigate(['url-alias-input'])
+    })
 
-    const $result = this.authService.validate(username, password)
-    $result.subscribe(response => {
-        console.log(response)
-        // this.authService.setUserInfo({user: response.user})
-        this.router.navigate(['login'])
-      })
-    }
+    // $result.subscribe(response => {
+    //     // console.log(response)
+    //     // this.authService.setUserInfo({user: response.user})
+
+    //   })
+  }
 }

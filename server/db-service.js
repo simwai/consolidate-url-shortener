@@ -8,13 +8,14 @@ class DbService {
       "host": "127.0.0.1",
       "user": "root",
       "password": "",
-      "database": "consolidate_url_shortener"
+      "database": "consolidate_url_shortener",
     }, mysql2);
   }
 
   findUrlForAlias(alias) {
-    const sql = 'select * from url left join alias on url.id = alias.url_id where alias = "?"'
+    const sql = 'select * from url left join alias on url.id = alias.url_id where alias = ?'
     const inserts = [alias]
+
     return db.query(sql, inserts)
   }
 
@@ -28,7 +29,7 @@ class DbService {
 
     const urlId = lastUrlId.length === 0 ? 0 : lastUrlId[0].id + 1
 
-    const sql2 = 'insert ignore into url values("?", "?")'
+    const sql2 = 'insert ignore into url values(?, ?)'
     const inserts2 = [urlId, url]
     await db.query(sql2, inserts2)
 
@@ -37,10 +38,25 @@ class DbService {
 
     const aliasId = lastAliasId.length === 0 ? 0 : lastAliasId[0].id + 1
     
-    const sql4 = 'insert ignore into alias values("?", "?", "?")'
+    const sql4 = 'insert ignore into alias values(?, ?, ?)'
     const inserts4 = [aliasId, alias, urlId]
+
     return db.query(sql4, inserts4)
   }
+
+  findPasswordForUsername(username) {
+    const sql = 'select password from credential where username = ?'
+    const inserts = [username]
+    
+    return db.query(sql, inserts)
+  }
+
+  // insertTest(username, password) {
+  //   const sql = 'insert into credential (username, password, id) values (?, ?, 0)'
+  //   const inserts = [username, password]
+
+  //   return db.query(sql, inserts)
+  // }
 }
 
 module.exports = {

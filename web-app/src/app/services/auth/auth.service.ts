@@ -2,28 +2,46 @@ import { Observable } from 'rxjs'
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 
+import { HttpService } from '../http/http-service.service'
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private httpService: HttpService) { }
 
-  isAuthenticated(): boolean {
-    const userData = localStorage.getItem('userInfo')
+  async isAuthenticated(): Promise<boolean> {
+    const accessToken = localStorage.getItem('accessToken')
 
-    if (userData && JSON.parse(userData)) return true
+    if (accessToken) {
+      const $response = await this.httpService.validateToken(accessToken)
 
-    return false
+      return new Promise((resolve, _reject) => {
+        $response.subscribe(
+          _response => resolve(true),
+          _error => {
+            resolve(false)
+          }
+        )
+      })
+    }
   }
 
-  // TODO fix user type
-  setUserInfo(user: any): void {
-    localStorage.setItem('userInfo', JSON.stringify(user))
-  }
+  authenticate(username: string, password: string): Promise<boolean> {
+    const $response = this.httpService.login(username, password)
 
-  // TODO refactor into http service
-  validate(username: string, password: string): Observable<object> {
-    return this.http.post('http://localhost:3000/authenticate', {username: username, password: password})
+    // TODO use interceptor
+    return new Promise((resolve, _reject) => {
+      $response.subscribe(
+        response => {
+          localStorage.setItem('accessToken', response.accessToken)
+          resolve(true)
+        },
+        _error => {
+          resolve(false)
+        }
+      )
+    })
   }
 }
